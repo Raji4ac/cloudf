@@ -1,0 +1,6 @@
+image: 
+  repository: 407149050300.dkr.ecr.us-east-1.amazonaws.com/raji
+  tag: latest
+  pullPolicy: Always
+  pullSecrets: regcred
+

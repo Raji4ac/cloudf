@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-springboot
+  namespace: cloudf-system
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: microservice-springboot
+  template:
+    metadata:
+      labels:
+        app: microservice-springboot
+    spec:
+      containers:
+        - name: springboot
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"  
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecrets }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-springboot
+  namespace: cloudf-system
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: microservice-springboot
+
